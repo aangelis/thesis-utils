@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: thesis-utils-clip
+spec:
+  type: ClusterIP
+  selector:
+    component: thesis-utils
+  ports:
+    - port: 8080
+      targetPort: 3000
+      name: thesis-utils
+      protocol: TCP
