@@ -16,6 +16,7 @@ const settings = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
     // Handle any other HTTP methods
     res.status(400).json({ message: "Bad HTTP method." });
     return;
@@ -234,7 +235,7 @@ const get_person_ : any = async (person_el: string, url: string) => {
     'text': person_el,
     'count': '1',
   };
-  console.log(headers,payload)
+  // console.log(headers,payload)
   return await fetchJson(url + '/search', {
     method: 'POST',
     headers, 
@@ -466,7 +467,7 @@ const get_license_: any = async (license: string, url: string) => {
     headers, 
     body: new URLSearchParams(payload),
   })
-  .then(response => { console.log(response);
+  .then(response => {
     return response['results'][0]['id'] as unknown as number;
   })
   .catch(err => {console.error(err); return null;});
@@ -585,7 +586,7 @@ async function getObjectContents(objectName: string) {
         size += chunk.length
       })
       dataStream.on('end', function() {
-        console.log('End. Total size = ' + size)
+        // console.log('End. Total size = ' + size)
         // console.log("End Buffer : " + buff)
         resolve(buff)
       })
@@ -616,7 +617,7 @@ const upload_file_: any = async (deposit_returned_id: number, instance: any, url
   // https://stackoverflow.com/questions/60620160/uploading-file-via-api-using-nodejs-fetch
   const form = new FormData();
   form.append('objectId', '/lib/default/data/' + deposit_returned_id as string);
-  console.log("file contents ", fileContents)
+  // console.log("file contents ", fileContents)
   form.append('theFile', await fileContents[0], {
     contentType: 'application/pdf',
     filename: instance.original_filename,
@@ -638,7 +639,7 @@ const upload_file_: any = async (deposit_returned_id: number, instance: any, url
     return r;
   })
   .then(r => {return tryParseJSONObject(r)})
-  .then(response => { console.log(response)
+  .then(response => {
     return response.message === 'OK';
   });
 }
